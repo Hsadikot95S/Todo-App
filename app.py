@@ -10,7 +10,7 @@ import datetime
 # App initialization
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
-app.config["MONGO_URI"] ="abcdefghijklmnopqrstuvwxyz"
+app.config["MONGO_URI"] ="mongodb+srv://admin:test@cluster0.2pkodqh.mongodb.net/todolistDB"
 mongo = PyMongo(app)
 
 # Scheduler initialization
