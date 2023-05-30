@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .checked {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Welcome, {{ session['username'] }}!</h1>
+        <h2 class="mb-4">Your To-Do List:</h2>
+        <ul class="list-group mb-4">
+            {% for todo in todos %}
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <input type="checkbox" class="form-check-input" {% if todo['completed'] %}checked{% endif %} disabled>
+                            <span {% if todo['completed'] %}class="checked"{% endif %}>{{ todo['item'] }}</span>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="taskActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Actions
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="taskActionsDropdown">
+                                <a class="dropdown-item" href="{{ url_for('complete', todo_item=todo['item']) }}">Complete</a>
+                                <a class="dropdown-item" href="{{ url_for('delete', todo_item=todo['item']) }}">Delete</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editTaskModal{{ loop.index }}">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        {% for tag in todo['tags'] %}
+                            <span class="badge badge-primary">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="dates">
+                        {% if todo['created_date'] %}
+                            <span class="badge badge-info">Created: {{ todo['created_date'] }}</span>
+                        {% endif %}
+                        {% if todo['due_date'] %}
+                            <span class="badge badge-warning">Due: {{ todo['due_date'] }}</span>
+                        {% endif %}
+                        {% if todo['due_time'] %}
+                            <span class="badge badge-secondary">Time: {{ todo['due_time'] }}</span>
+                        {% endif %}
+                        {% if todo['alarm'] %}
+                            <span class="badge badge-danger">Alarm set</span>
+                        {% endif %}
+                    </div>
+                </li>
+
+                <!-- Edit Task Modal -->
+                <div class="modal fade" id="editTaskModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="editTaskModalLabel{{ loop.index }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editTaskModalLabel{{ loop.index }}">Edit Task</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="{{ url_for('edit', todo_item=todo['item']) }}" method="post">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="editTaskName{{ loop.index }}">Task Name</label>
+                                        <input type="text" class="form-control" id="editTaskName{{ loop.index }}" name="item" value="{{ todo['item'] }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editTaskPriority{{ loop.index }}">Priority</label>
+                                        <select class="form-control" id="editTaskPriority{{ loop.index }}" name="priority">
+                                            <option value="Low" {% if todo['priority'] == 'Low' %}selected{% endif %}>Low</option>
+                                            <option value="Medium" {% if todo['priority'] == 'Medium' %}selected{% endif %}>Medium</option>
+                                            <option value="High" {% if todo['priority'] == 'High' %}selected{% endif %}>High</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editTaskTags{{ loop.index }}">Tags</label>
+                                        <input type="text" class="form-control" id="editTaskTags{{ loop.index }}" name="tags" value="{{ ', '.join(todo['tags']) if todo['tags'] else '' }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editTaskCreatedDate{{ loop.index }}">Created Date</label>
+                                        <input type="date" class="form-control" id="editTaskCreatedDate{{ loop.index }}" name="created_date" value="{{ todo['created_date'] }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editTaskDueDate{{ loop.index }}">Due Date</label>
+                                        <input type="date" class="form-control" id="editTaskDueDate{{ loop.index }}" name="due_date" value="{{ todo['due_date'] }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editTaskDueTime{{ loop.index }}">Due Time</label>
+                                        <input type="time" class="form-control" id="editTaskDueTime{{ loop.index }}" name="due_time" value="{{ todo['due_time'] }}">
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="editTaskAlarm{{ loop.index }}" name="alarm" {% if todo['alarm'] %}checked{% endif %}>
+                                        <label class="form-check-label" for="editTaskAlarm{{ loop.index }}">Set Alarm</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </ul>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTaskModal">
+            Add Task
+        </button>
+        <a href="{{ url_for('completed') }}" class="btn btn-primary">View Completed Tasks</a>
+        <a href="{{ url_for('export') }}" class="btn btn-primary">Export Completed Tasks</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ url_for('add') }}" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="taskName">Task Name</label>
+                            <input type="text" class="form-control" id="taskName" name="item" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskPriority">Priority</label>
+                            <select class="form-control" id="taskPriority" name="priority">
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskTags">Tags</label>
+                            <input type="text" class="form-control" id="taskTags" name="tags">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskCreatedDate">Created Date</label>
+                            <input type="date" class="form-control" id="taskCreatedDate" name="created_date">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDueDate">Due Date</label>
+                            <input type="date" class="form-control" id="taskDueDate" name="due_date">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDueTime">Due Time</label>
+                            <input type="time" class="form-control" id="taskDueTime" name="due_time">
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="taskAlarm" name="alarm">
+                            <label class="form-check-label" for="taskAlarm">Set Alarm</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+# .gitignore
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+*.py[co]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Flask specific
+instance/
+.flaskenv
+
+# SQLite databases
+*.sqlite
+
+# Logs
+logs/
+*.log
+
+# Configurations
+*.cfg
+
+# Environments
+.env
+.venv
+ENV/
+env/
+venv/
+env.bak/
+venv.bak/
+
+# IDE/Editors
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.idea/
+
+# OS Files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Credentials
+credentials.json
+token.pickle
+
+# Google Calendar API files
+*.credentials.json
+*.pickle
+
