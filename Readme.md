@@ -37,3 +37,23 @@ A simple and interactive todo list application built with Flask and MongoDB. Thi
 - [APScheduler](https://apscheduler.readthedocs.io/en/stable/): Python scheduling library.
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas): Cloud database service for MongoDB.
 
+## The application is deployed on heroku
+https://afternoon-plateau-57099.herokuapp.com/
+## The following screenshots show the working of the application
+
+1. First the user registers for the application
+![img.png](img.png)
+2. Then the users logs in to the app
+![img_2.png](img_2.png)
+3. The User will add particular task
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
+![img_5.png](img_5.png)
+4. There is a functionality to add the task, Mark it as complete edit or delete it
+![img_6.png](img_6.png)
+5. There is also an functionality to view and export the complete tasks into a csv file
+![img_7.png](img_7.png)
+![img_8.png](img_8.png)
+6. No user is allowed to login without registering
+7. Duplicate users are not allowed
+![img_1.png](img_1.png)
