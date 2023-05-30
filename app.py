@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 from flask_pymongo import PyMongo
+from flask import redirect, url_for
 from bcrypt import hashpw, checkpw, gensalt
 import csv
 import os
@@ -31,6 +32,8 @@ def send_reminder(username, todo_item):
 # The main route rendering the index page
 @app.route('/')
 def index():
+
+
     # Initialize empty list for todos
     todos = []
 
@@ -39,8 +42,9 @@ def index():
         user = mongo.db.users.find_one({'username': session['username']})
         if user:
             todos = user['todos']
-    return render_template('index.html', todos=todos)
+            return render_template('index.html', todos=todos)
 
+    return redirect(url_for('login'))
 # Route for user registration
 @app.route('/register', methods=['GET', 'POST'])
 def register():

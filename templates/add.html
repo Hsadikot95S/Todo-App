@@ -6,7 +6,20 @@
 <body>
     <h1>Add Todo Item</h1>
     <form method="POST" action="{{ url_for('add') }}">
-        <input type="text" name="item" placeholder="Enter todo item">
+        <input type="text" name="item" placeholder="Enter todo item" required><br><br>
+        <label for="priority">Priority:</label>
+        <select name="priority" id="priority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select><br><br>
+        <input type="text" name="tags" placeholder="Enter tags (comma-separated)"><br><br>
+        <label for="created_date">Created Date:</label>
+        <input type="date" name="created_date" id="created_date"><br><br>
+        <label for="due_date">Due Date:</label>
+        <input type="date" name="due_date" id="due_date"><br><br>
+        <label for="alarm">Set Alarm:</label>
+        <input type="checkbox" name="alarm" id="alarm"><br><br>
         <button type="submit">Add</button>
     </form>
 </body>
