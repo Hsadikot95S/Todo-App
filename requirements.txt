@@ -1,7 +1,6 @@
 APScheduler==3.6.3
 bcrypt==4.0.1
 certifi==2021.5.30
-cffi @ file:///C:/ci/cffi_1625831763871/work
 click==8.0.4
 colorama==0.4.5
 dataclasses @ file:///tmp/build/80754af9/dataclasses_1614363715916/work
