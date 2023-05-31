@@ -44,7 +44,7 @@ def index():
             todos = user['todos']
             return render_template('index.html', todos=todos)
 
-    return redirect(url_for('login'))
+    return redirect(url_for('register'))
 # Route for user registration
 @app.route('/register', methods=['GET', 'POST'])
 def register():

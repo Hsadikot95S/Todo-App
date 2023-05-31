@@ -1,10 +1,9 @@
-
 {% extends "base.html" %}
 
 {% block content %}
     <div class="container py-5">
         <h1 class="text-center mb-4">Completed Tasks</h1>
-        <ul class="list-group mb-4">
+        <ul class="list-group mb-3">
             {% if completed_todos %}
                 {% for todo in completed_todos %}
                     <li class="list-group-item">
@@ -26,3 +25,4 @@
         </div>
     </div>
 {% endblock %}
+
