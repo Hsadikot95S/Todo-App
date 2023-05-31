@@ -38,7 +38,7 @@ A simple and interactive todo list application built with Flask and MongoDB. Thi
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas): Cloud database service for MongoDB.
 
 ## The application is deployed on heroku
-https://afternoon-plateau-57099.herokuapp.com/
+https://vast-sierra-41395.herokuapp.com/
 ## The following screenshots show the working of the application
 
 1. First the user registers for the application
