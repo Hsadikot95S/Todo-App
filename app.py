@@ -9,7 +9,15 @@ import datetime
 
 # App initialization
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'mongodb'
+# Set the session cookie to be secure (HTTPS-only) in production
+app.config['SESSION_COOKIE_SECURE'] = True
+
+# Set the session cookie to be accessible only via HTTP(S), not JavaScript
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+
 app.config['SECRET_KEY'] = os.urandom(24)
+
 app.config["MONGO_URI"] ="mongodb+srv://admin:test@cluster0.2pkodqh.mongodb.net/Todo"
 mongo = PyMongo(app)
 
