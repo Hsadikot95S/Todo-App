@@ -173,7 +173,7 @@ def completed():
         else:
             completed_todos = []
         return render_template('completed.html', completed_todos=completed_todos)
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 # Route for exporting completed todos to CSV
 @app.route('/export_csv')
@@ -190,7 +190,7 @@ def export():
                     writer.writerow([todo['item'], todo['priority'], ', '.join(todo['tags']),
                                      todo['created_date'], todo['due_date'], todo['alarm']])
             return send_file(filepath, as_attachment=True, mimetype='text/csv', attachment_filename=os.path.basename(filepath))
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 # Main driver function
 if __name__ == '__main__':
