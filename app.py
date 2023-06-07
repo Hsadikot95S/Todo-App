@@ -10,8 +10,10 @@ import datetime
 # App initialization
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'mongodb'
+app.config['SESSION_PERMANENT'] = True
+
 # Set the session cookie to be secure (HTTPS-only) in production
-app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_SECURE'] = False
 
 # Set the session cookie to be accessible only via HTTP(S), not JavaScript
 app.config['SESSION_COOKIE_HTTPONLY'] = True
