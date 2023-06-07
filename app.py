@@ -21,7 +21,7 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 #app.config['SECRET_KEY'] = os.urandom(24)
 app.secret_key = os.environ.get('SECRET_KEY', 'fallback-secret-key')
 
-app.config["MONGO_URI"] ="mongodb+srv://admin:test@cluster0.2pkodqh.mongodb.net/Todo"
+app.config["MONGO_URI"] ="add your mongo uri here"
 mongo = PyMongo(app)
 
 # Scheduler initialization
