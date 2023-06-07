@@ -120,6 +120,7 @@ def add():
 # Route for marking a todo as completed
 @app.route('/complete/<string:todo_item>')
 def complete(todo_item):
+    print(session['username'])
     if 'username' in session:
         mongo.db.users.update_one(
             {'username': session['username'], 'todos.item': todo_item},
