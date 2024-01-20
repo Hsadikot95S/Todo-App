@@ -9,8 +9,8 @@
 name: CI-CD-Pipeline-to-AWS-ElasticBeanstalk
 env:
   EB_PACKAGE_S3_BUCKET_NAME: "hsadikot-todo-app"
-  EB_APPLICATION_NAME: "Todo-App"
-  EB_ENVIRONMENT_NAME: "Todo-App-env"
+  EB_APPLICATION_NAME: "Todo"
+  EB_ENVIRONMENT_NAME: "Todo-env"
   DEPLOY_PACKAGE_NAME: "flask-app-${{ github.sha }}.zip"
   AWS_REGION_NAME: "us-east-1"
   UNIQUE_VERSION_LABEL: "Ver-${{ github.sha }}-${{ github.run_number }}"
