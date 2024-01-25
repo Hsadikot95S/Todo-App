@@ -1,29 +1,371 @@
-<!-- register.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Register</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster - Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-Xl3+J1X7m5IN+YFpSbUG00B+CBLMLnuXfrV80na04c/FSOir01Tz7zXtK5VfqGKCeP+N5/QWe+o3qYnujX51bg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Common Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light gray background color */
+        }
+
+        /* Title Bar Styles */
+        .title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px; /* Adjust as needed */
+            background-color: #eceff2; /* Adjust as needed */
+            color: #fff;
+        }
+
+        .logo-appname {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            margin-right: 10px; /* Adjust as needed */
+        }
+
+        .app-name {
+            color: black; /* Change to black */
+        }
+
+        .logo img {
+            width: 40px; /* Increase the width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .applications {
+            margin-right: 20px; /* Adjust as needed */
+        }
+
+        .right-options {
+            display: flex;
+            align-items: center;
+        }
+
+        .right-options p,
+        .right-options button {
+            margin-right: 10px; /* Adjust as needed */
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background-color: #e9d4d4;
+            color: #0b0b0b;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropbtn:hover,
+        .dropbtn:focus {
+            background-color: #e9d4d4;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #e9d4d4; /* Change background color here */
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #1b1919;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #cb6f6f;
+        }
+
+        .dropbtn:hover,
+        .dropdown:hover .dropbtn {
+            background-color: #cb6f6f;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Register Button Styles */
+        .register-btn {
+            background-color: #86a537;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Remove default underline */
+        }
+
+        .register-btn:hover {
+            background-color: #0e4010;
+        }
+
+        /* Login Button Styles */
+        .login-btn {
+            background-color: #295093;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Remove default underline */
+        }
+
+        .login-btn:hover {
+            background-color: #101d5f;
+        }
+
+        /* Background Image Styles */
+        .background-image {
+            background-image: url('https://www.simplilearn.com/ice9/free_resources_article_thumb/Proven_Time_Management_Tips_and_Strategies_for_students.jpg'); /* New background image URL */
+            background-size: cover; /* Cover the entire background area */
+            background-position: center; /* Center the background image */
+            height: 40vh; /* Adjusted height */
+            position: relative; /* Ensure proper positioning of absolute elements */
+            z-index: 0; /* Lower z-index to ensure other elements appear on top */
+        }
+
+        /* Registration Form Styles */
+        .form-container {
+            position: absolute; /* Position form relative to the background image */
+            top: 50px; /* Adjusted top position */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Center alignment horizontally */
+            display: none; /* Initially hidden */
+            z-index: 2; /* Higher z-index to appear on top of background image */
+            width: 80%; /* Adjusted width */
+            max-width: 800px; /* Maximum width */
+            background-color: #fff; /* Form background color */
+            border-radius: 8px; /* Form border radius */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Form box shadow */
+            padding: 20px; /* Form padding */
+            text-align: center; /* Form text alignment */
+        }
+
+        /* Form Group Styles */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333; /* Label color */
+        }
+
+        .form-group input {
+            width: calc(100% - 30px);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc; /* Input border */
+            font-size: 16px;
+            outline: none; /* Remove input outline */
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999; /* Icon color */
+        }
+
+        .form-group button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+
+        
+
+        /* Key Features Styles */
+.features {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: left; /* Align text to the left */
+}
+
+.features h2 {
+    color: #007bff;
+    margin-bottom: 10px; /* Add margin below the heading */
+}
+
+.features ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.features li {
+    margin-bottom: 15px; /* Increase margin between list items */
+    position: relative; /* Position list items relative to parent */
+    padding-left: 30px; /* Add padding to the left for icon */
+}
+
+.features li:before {
+    content: "\f058"; /* Unicode for checkmark icon (fa-clock) */
+    font-family: "Font Awesome 5 Free"; /* Specify Font Awesome family */
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #007bff; /* Color of the icon */
+}
+
+/* Adjust icon for each list item */
+.features li:nth-child(2):before {
+    content: "\f0f3"; /* Unicode for bell icon (fa-bell) */
+}
+
+.features li:nth-child(3):before {
+    content: "\f0c0"; /* Unicode for users icon (fa-users) */
+}
+
+.features li:nth-child(4):before {
+    content: "\f080"; /* Unicode for chart-line icon (fa-chart-line) */
+}
+
+.features li:nth-child(5):before {
+    content: "\f0ae"; /* Unicode for tasks icon (fa-tasks) */
+}
+
+
+        .scrollable {
+            max-height: 300px; /* Adjust the max height as needed */
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Register</h1>
-        <form method="POST" action="{{ url_for('register') }}">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" name="username" id="username" required>
+    <div class="title-bar">
+        <div class="logo-appname">
+            <div class="logo">
+                <img src="https://pics.craiyon.com/2023-08-04/218b0ec951474bf9b3a5eed5323edf84.webp" alt="TaskMaster Logo">
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" required>
+            <div class="app-name">
+                Task Master
             </div>
-            <div class="form-group">
-                <label for="confirm_password">Confirm Password</label>
-                <input type="password" name="confirm_password" id="confirm_password" required>
+        </div>
+        <div class="right-options">
+            <div class="applications">
+                <div class="dropdown">
+                    <button class="dropbtn">Applications</button>
+                    <div class="dropdown-content">
+                        <a href="#">Meeting</a>
+                        <a href="#">Add Task</a>
+                        <a href="#">Set Alarm</a>
+                        <a href="#">Collaboration</a>
+                        <a href="#">Analytics</a>
+                        <a href="#">Priority Management</a>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn">Register</button>
-        </form>
-        <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+            <button class="register-btn" onclick="toggleForm()">Register</button>
+            <button class="login-btn"><a href="{{ url_for('login') }}" style="color: rgb(236, 229, 229);">Login</a></button>
+        </div>
     </div>
+    
+    <div class="background-image"></div> <!-- Background image div -->
+
+    <div class="form-container" id="registrationForm">
+        <h2>Register</h2>
+        <p>Start organizing your tasks with Task Master!</p>
+        <form action="{{ url_for('register') }}" method="post">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        <div class="thank-you-message" id="thankYouMessage" style="display: none;">Thank you for registering!</div>
+    </div>
+
+    <div class="features">
+        <h2>Key Features:</h2>
+        <ul>
+            <li><i class="fas fa-clock"></i> Schedule and manage tasks efficiently.</li>
+            <li><i class="fas fa-bell"></i> Set reminders for important deadlines.</li>
+            <li><i class="fas fa-users"></i> Collaborate with team members on shared tasks.</li>
+            <li><i class="fas fa-chart-line"></i> Track task analytics and performance.</li>
+            <li><i class="fas fa-tasks"></i> Manage task priorities effectively.</li>
+        </ul>
+    </div>
+
+    <div class="faq">
+        <h2>Frequently Asked Questions:</h2>
+        <div class="scrollable">
+            <h3>How to use this app?</h3>
+            <p>Answer: To use this app, simply sign up for an account and start adding tasks to your to-do list. You can set deadlines, prioritize tasks, and collaborate with team members.</p>
+            
+            <h3>What are the features?</h3>
+            <p>Answer: This app allows you to schedule tasks, set reminders, categorize tasks with tags, and share tasks with team members. You can also track task completion status and receive notifications for upcoming deadlines.</p>
+            
+            <h3>Is this app free?</h3>
+            <p>Answer: Yes, this app is completely free to use.</p>
+
+            <h3>How can I collaborate with team members?</h3>
+            <p>Answer: You can invite team members to join your workspace and assign tasks to them. Collaborators can view and update shared tasks.</p>
+
+            <h3>Can I customize task priorities?</h3>
+            <p>Answer: Yes, you can set task priorities and organize your tasks based on urgency and importance.</p>
+            
+            <!-- Add more FAQs and answers as needed -->
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("registrationForm");
+            var backgroundImage = document.querySelector(".background-image");
+
+            if (form.style.display === "none" || !form.style.display) {
+                form.style.display = "block";
+                backgroundImage.style.zIndex = "-1"; // Send background image to the back
+            } else {
+                form.style.display = "none";
+                backgroundImage.style.zIndex = "0"; // Bring background image to the front
+            }
+        }
+    </script>
 </body>
 </html>

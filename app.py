@@ -21,7 +21,7 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 #app.config['SECRET_KEY'] = os.urandom(24)
 app.secret_key = os.environ.get('SECRET_KEY', 'fallback-secret-key')
 
-app.config["MONGO_URI"] ="add your mongo uri here"
+app.config["MONGO_URI"] = "mongodb+srv://admin:test@cluster0.2pkodqh.mongodb.net/Cluster0"
 mongo = PyMongo(app)
 
 # Scheduler initialization
@@ -58,16 +58,41 @@ def index():
     return redirect(url_for('register'))
 # Route for user registration
 @app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
+# Route for user registration
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    # If request method is POST, register new user
     if request.method == 'POST':
-        existing_user = mongo.db.users.find_one({'username': request.form['username']})
-        if existing_user is None:
-            hashed_password = hashpw(request.form['password'].encode('utf-8'), gensalt())
-            mongo.db.users.insert_one({'username': request.form['username'], 'password': hashed_password, 'todos': []})
-            session['username'] = request.form['username']
-            return redirect(url_for('index'))
-        return 'Username already exists!'
+        # Validate form data
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        # Check if passwords match
+        if password != confirm_password:
+            flash('Passwords do not match!', 'error')
+            return redirect(url_for('register'))
+
+        # Check if username already exists
+        existing_user = mongo.db.users.find_one({'username': username})
+        if existing_user:
+            flash('Username already exists!', 'error')
+            return redirect(url_for('register'))
+
+        # Hash the password
+        hashed_password = hashpw(password.encode('utf-8'), gensalt())
+
+        # Store user data in MongoDB
+        mongo.db.users.insert_one({'username': username, 'password': hashed_password, 'todos': []})
+
+        # Redirect to index page after successful registration
+        session['username'] = username  # Set session after registration
+        return redirect(url_for('index'))
+
+    return render_template('register.html')
+
+
     return render_template('register.html')
 
 # Route for user login
